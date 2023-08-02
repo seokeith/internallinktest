@@ -3,6 +3,9 @@ import requests
 import json
 import streamlit as st
 
+# Add a title to the Streamlit app
+st.title("Internal Link Opps")
+
 def search(query, api_key, cse_id, **kwargs):
     url = "https://www.googleapis.com/customsearch/v1"
     params = {
