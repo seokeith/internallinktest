@@ -1,46 +1,46 @@
 import streamlit as st
-import requests
-from bs4 import BeautifulSoup
+import urllib.request
+from html.parser import HTMLParser
+
+class MyHTMLParser(HTMLParser):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.in_paragraph = False
+        self.links = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == 'p':
+            self.in_paragraph = True
+        elif tag == 'a' and self.in_paragraph:
+            href = dict(attrs).get('href')
+            if href:
+                self.links.append(href)
+
+    def handle_endtag(self, tag):
+        if tag == 'p':
+            self.in_paragraph = False
 
 def get_links(urls):
-    all_links = {}
+    parser = MyHTMLParser()
     for url in urls:
-        # Send a GET request to the website
-        response = requests.get(url)
-
-        # Check if the request was successful
-        if response.status_code == 200:
-            # Parse the HTML content of the page using BeautifulSoup
-            soup = BeautifulSoup(response.content, "html.parser")
-
-            # Find all links within <p> tags
-            links = []
-            for p in soup.find_all("p"):
-                for link in p.find_all("a"):
-                    link_url = link.get("href")
-                    link_text = link.text.strip() if link.text else ""
-                    links.append((link_url, link_text))
-
-            all_links[url] = links
-        else:
-            st.error(f"Failed to retrieve data from {url}")
-    return all_links
+        try:
+            with urllib.request.urlopen(url) as response:
+                html = response.read()
+                parser.feed(str(html))
+        except Exception as e:
+            st.error(f"Failed to retrieve data from {url}. Error: {str(e)}")
+    return parser.links
 
 def main():
     st.title("URL Link Extractor")
-
     uploaded_file = st.file_uploader("Upload a file with URLs", type='txt')
     if uploaded_file is not None:
         text_string = uploaded_file.read().decode('utf-8')
         urls = text_string.split("\n")
-        
         if st.button("Extract links"):
             links = get_links(urls)
-            for url, link_list in links.items():
-                st.write(f"URL: {url}")
-                for link in link_list:
-                    st.write(f"Link URL: {link[0]}")
-                    st.write(f"Link Text: {link[1]}")
+            for link in links:
+                st.write(link)
 
 if __name__ == "__main__":
     main()
