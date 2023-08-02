@@ -25,7 +25,7 @@ api_key = "AIzaSyAsHeIpxd-FCLdyg4mXLjmlc3iH76pd1Es"
 cse_id = "152d311f722f0406c"
 
 # Instructions for uploading CSV file
-st.write("Please upload a CSV file. The CSV file should have two columns. Column one should be called <b>target_page</b>, column 2 should be called <b>keyword</b>.")
+st.write("Please upload a CSV file. The CSV file should have two columns. Column one should be called target_page, column 2 should be called keyword.")
 
 # Upload CSV file
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
