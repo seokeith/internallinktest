@@ -3,6 +3,7 @@ import urllib.request
 from html.parser import HTMLParser
 import csv
 import pandas as pd
+import io
 
 class MyHTMLParser(HTMLParser):
     def __init__(self, *args, **kwargs):
@@ -45,7 +46,8 @@ def main():
     st.title("URL Link Extractor")
     uploaded_file = st.file_uploader("Upload a CSV file with URLs", type='csv')
     if uploaded_file is not None:
-        csv_reader = csv.reader(uploaded_file)
+        text_io = io.TextIOWrapper(uploaded_file)
+        csv_reader = csv.reader(text_io)
         urls = [row[0] for row in csv_reader]  # Assumes URLs are in first column
         if st.button("Extract links"):
             data = get_links(urls)
