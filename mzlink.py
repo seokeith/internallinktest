@@ -1,7 +1,6 @@
 import pandas as pd
 import requests
 import json
-from google.colab import files
 
 def search(query, api_key, cse_id, **kwargs):
     url = "https://www.googleapis.com/customsearch/v1"
