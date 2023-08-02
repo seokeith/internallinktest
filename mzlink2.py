@@ -17,8 +17,8 @@ def search(query, api_key, cse_id, **kwargs):
     response = requests.get(url, params=params)
     return json.loads(response.text)
 
-# Your site, for example "moneyzine.com"
-site = "moneyzine.com"
+# Ask the user to input a domain
+site = st.text_input("Enter the domain")
 
 # Google API key and Custom Search Engine ID
 api_key = "AIzaSyAsHeIpxd-FCLdyg4mXLjmlc3iH76pd1Es"
