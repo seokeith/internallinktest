@@ -44,6 +44,7 @@ def get_links(urls):
 
 def main():
     st.title("URL Link Extractor")
+st.write("Please upload a CSV file. The CSV file should have one column with the URLs you want to check. The output will tell you where this page is linking to.")
     uploaded_file = st.file_uploader("Upload a CSV file with URLs", type='csv')
     if uploaded_file is not None:
         text_io = io.TextIOWrapper(uploaded_file)
