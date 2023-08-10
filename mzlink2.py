@@ -21,7 +21,7 @@ def search(query, api_key, cse_id, **kwargs):
 site = st.text_input("Enter the domain")
 
 # Google API key and Custom Search Engine ID
-api_key = "AIzaSyAsHeIpxd-FCLdyg4mXLjmlc3iH76pd1Es"
+api_key = "AIzaSyBnCvi-APRiLU6T9GoKGECR5txDXDQNsiw"
 cse_id = "152d311f722f0406c"
 
 # Instructions for uploading CSV file
