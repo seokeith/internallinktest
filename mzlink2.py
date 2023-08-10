@@ -15,7 +15,15 @@ def search(query, api_key, cse_id, **kwargs):
     }
     params.update(kwargs)
     response = requests.get(url, params=params)
-    return json.loads(response.text)
+    response_json = json.loads(response.text)
+    
+    # Check if the API returned an error
+    if 'error' in response_json:
+        error_message = response_json.get('error', {}).get('message', 'Unknown error')
+        print(f"Error with query '{query}': {error_message}")
+        return {}
+    
+    return response_json
 
 # Ask the user to input a domain
 site = st.text_input("Enter the domain")
@@ -38,9 +46,12 @@ if uploaded_file is not None:
     for index, row in df.iterrows():
         # search query
         query = f"site:{site} {row['keyword']} -inurl:{row['target_page']}"
-
+        
         # get the search results
         results = search(query, api_key, cse_id)
+        
+        # Log the results for debugging
+        print(f"Results for query '{query}': {results}")
 
         # Extract the URLs of the search results
         link_list = [result['link'] for result in results.get('items', [])]
